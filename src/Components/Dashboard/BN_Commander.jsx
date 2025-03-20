@@ -1,11 +1,7 @@
 import React from 'react';
 
-function BN_Commander() {
-  return (
-    <>
-      <h1>Hello</h1>
-    </>
-  )
+function BN_Dashboard() {
+  return<h2>BDE Commander Dashboard</h2>;
 }
 
-export default BN_Commander;
+export default BN_Dashboard;

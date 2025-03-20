@@ -7,13 +7,13 @@ function Home() {
   return (
     <div>
       <h1>Sentinel Division Dashboard</h1>
-      <Link to={"/BN_Commander"}>
+      <Link to={"/BN_Dashboard"}>
         <button>View as BN Commander</button>
       </Link>
-      <Link to={"/BDE_Commander"}>
+      <Link to={"/BDE_Dashboard"}>
         <button>View as BDE Commander</button>
       </Link>
-      <Link to={"/Div_Commander"}>
+      <Link to={"/Div_Dashboard"}>
         <button>View as Division Commander</button>
       </Link>
     </div>
