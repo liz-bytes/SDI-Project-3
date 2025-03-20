@@ -14,18 +14,3 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>
 );
-
-// import BN_Dashboard from './Components/Dashboard/BN_Commander.jsx';
-
-// const router = createBrowserRouter([
-//   {path: "/", element:
-//     <App>
-//       <Home/>
-//     </App>
-//   },
-//   {path: "/BN_Commander", element:
-//     <App>
-//       <BN_Commander/>
-//     </App>
-//   },
-// ]);

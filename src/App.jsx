@@ -4,11 +4,13 @@ import Home from './Components/Home/Home.jsx';
 import BN_Dashboard from './Components/Dashboard/BN_Commander.jsx';
 import BDE_Dashboard from './Components/Dashboard/BDE_Commander.jsx';
 import Div_Dashboard from './Components/Dashboard/Div_Commander.jsx';
+import PageNotFound from './Components/PageNotFound/PageNotFound.jsx';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="*" element={<PageNotFound />} />
         <Route path="/" element={<Home />} />
         <Route path="/BN_Dashboard" element={<BN_Dashboard />} />
         <Route path="/BDE_Dashboard" element={<BDE_Dashboard />} />
