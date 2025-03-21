@@ -13,8 +13,7 @@ function Equipment_Data() {
     setFilterValue('');
   };
 
-
-  // Filter the equipment
+  // Filter options
   const filteredEquipments = Equipments.filter((equipment) => {
     if (!filterCategory || !filterValue) {
       return true;
@@ -57,7 +56,7 @@ function Equipment_Data() {
           <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>Clear Filter</button>
         </div>
       )}
-      {/* equipment list */}
+      {/* search results */}
       <table>
         <thead>
           <tr>
