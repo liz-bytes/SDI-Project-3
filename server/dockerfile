@@ -1,7 +1,16 @@
 FROM node:18-alpine
-WORKDIR /app
-COPY . .
-EXPOSE 5173
-CMD npm install; npx knex migrate:latest; npx knex seed:run; npm run start -- --host
 
-#Ideal port for the host machine is port 5432
+WORKDIR /app
+
+COPY . .
+
+EXPOSE 5173
+
+CMD ["npm", "install"]
+
+CMD ["npx", "knex", "migrate:latest"]
+
+CMD ["npx", "knex", "seed:run"]
+
+CMD ["npm", "run", "dev", "--", "--host"]
+
