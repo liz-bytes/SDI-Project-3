@@ -13,3 +13,4 @@ CMD ["npx", "knex", "migrate:latest"]
 CMD ["npx", "knex", "seed:run"]
 
 CMD ["npm", "run", "dev", "--", "--host"]
+
