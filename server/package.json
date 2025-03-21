@@ -4,16 +4,18 @@
   "main": "knexfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "nodemon ./src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@faker-js/faker": "^9.6.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "knex": "^3.1.0",
+    "nodemon": "^3.1.9",
     "pg": "^8.14.1"
   }
 }

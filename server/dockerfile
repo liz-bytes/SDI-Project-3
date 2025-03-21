@@ -6,4 +6,10 @@ COPY . .
 
 EXPOSE 5173
 
+CMD ["npm", "install"]
+
+CMD ["npx", "knex", "migrate:latest"]
+
+CMD ["npx", "knex", "seed:run"]
+
 CMD ["npm", "run", "dev", "--", "--host"]
