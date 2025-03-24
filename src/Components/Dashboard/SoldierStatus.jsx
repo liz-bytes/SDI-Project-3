@@ -1,41 +1,17 @@
-import React, { useState } from 'react';
-import SoldierDummyData from './SoldierDummyData.js';
+import React, { useContext } from 'react';
+import { SoldierContext } from "./SoldierContext";
 import './Dashboard.css';
 
-function Div_Dashboard() {
-  // Get the array of soldier data
-  const Soldiers = SoldierDummyData();
+const SoldierStatus = () => {
 
-  const [filterCategory, setFilterCategory] = useState('');
-  const [filterValue, setFilterValue] = useState('');
-
-  const handleFilterCategoryChange = (category) => {
-    setFilterCategory(category);
-    setFilterValue(''); // reset the text input when changing category
-  };
-
-  // Filter the soldiers based on the selected category and input value
-  const filteredSoldiers = Soldiers.filter((soldier) => {
-    // If no category is selected or no value is typed, show all soldiers
-    if (!filterCategory || !filterValue) return true;
-
-    const searchTerm = filterValue.toLowerCase();
-
-    switch (filterCategory) {
-      case 'first name':
-        return soldier.first_name.toLowerCase().includes(searchTerm);
-      case 'last name':
-        return soldier.last_name.toLowerCase().includes(searchTerm);
-      case 'deployments':
-        return soldier.id_deployments.some(dep =>
-          dep.toLowerCase().includes(searchTerm)
-        );
-      case 'mos':
-        return (soldier.id_mos?.toString().toLowerCase() || '').includes(searchTerm);
-      default:
-        return true;
-    }
-  });
+  const {
+    filterCategory,
+    filterValue,
+    setFilterValue,
+    handleFilterCategoryChange,
+    filteredSoldiers,
+    setFilterCategory,
+  } =useContext(SoldierContext);
 
   return (
     <div>
@@ -94,7 +70,7 @@ function Div_Dashboard() {
         </table>
       </div>
     </div>
-  );
-}
+  )
+};
 
-export default Div_Dashboard;
+export default SoldierStatus;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import EquipmentData from './EquipmentDummyData.js';
+import '/src/index.css';
 
 function Equipment_Data() {
-  // Call the function to get the array of equipment data
+  // Get the array of equipment data
   const Equipments = EquipmentData();
 
   const [filterCategory, setFilterCategory] = useState('');
@@ -13,7 +14,7 @@ function Equipment_Data() {
     setFilterValue('');
   };
 
-  // Filter options
+  // Filter the equipment based on the selected category and input value
   const filteredEquipments = Equipments.filter((equipment) => {
     if (!filterCategory || !filterValue) {
       return true;
@@ -23,7 +24,7 @@ function Equipment_Data() {
       return equipment.name.toLowerCase().includes(filterValue.toLowerCase());
     }
     // Filter by deployment
-    if (filterCategory === 'id_deployments') {
+    if (filterCategory === 'deployment') {
       return equipment.id_deployments.some(dep =>
         dep.toLowerCase().includes(filterValue.toLowerCase())
       );
@@ -38,43 +39,58 @@ function Equipment_Data() {
   return (
     <div>
       <h2>Equipment Status</h2>
-      {/* filter section */}
-      <div>
-        <span>Filter by: </span>
-        <button onClick={() => handleFilterCategoryChange('name')}>Name</button>
-        <button onClick={() => handleFilterCategoryChange('id_deployments')}>Deployment</button>
-        <button onClick={() => handleFilterCategoryChange('status')}>Status</button>
+
+      {/* Filter Section with Dropdown */}
+      <div className="filter-section">
+        <h3>Filter by:</h3>
+        <select
+          className="filter-dropdown"
+          value={filterCategory}
+          onChange={(e) => handleFilterCategoryChange(e.target.value)}
+        >
+          <option value="">Select a filter</option>
+          <option value="name">Name</option>
+          <option value="deployment">Deployment</option>
+          <option value="status">Status</option>
+        </select>
       </div>
-      {filterCategory && (
-        <div>
-          <input
-            type="text"
-            placeholder={`Enter ${filterCategory} to filter`}
-            value={filterValue}
-            onChange={(e) => setFilterValue(e.target.value)}
-          />
-          <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>Clear Filter</button>
-        </div>
-      )}
-      {/* search results */}
-      <table>
-        <thead>
-          <tr>
-            <th>Equipment Name</th>
-            <th>Deployment</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEquipments.map((equipment) => (
-            <tr key={equipment.id}>
-              <td>{equipment.name}</td>
-              <td>{equipment.id_deployments.join(', ')}</td>
-              <td>{equipment.status}</td>
+
+      {/* Container to standardize width for the filter input and table */}
+      <div className="results-container">
+        {/* Show filter input if a category is selected */}
+        {filterCategory && (
+          <div className="filter-input-group">
+            <input
+              type="text"
+              placeholder={`Enter ${filterCategory} to filter`}
+              value={filterValue}
+              onChange={(e) => setFilterValue(e.target.value)}
+            />
+            <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>
+              Clear Filter
+            </button>
+          </div>
+        )}
+        <br />
+        <table>
+          <thead>
+            <tr>
+              <th>Equipment Name</th>
+              <th>Deployment</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredEquipments.map((equipment) => (
+              <tr key={equipment.id}>
+                <td>{equipment.name}</td>
+                <td>{equipment.id_deployments.join(', ')}</td>
+                <td>{equipment.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
