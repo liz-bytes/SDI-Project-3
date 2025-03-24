@@ -4,12 +4,8 @@ WORKDIR /app
 
 COPY . .
 
+RUN npm install
+
 EXPOSE 5173
 
-CMD ["npm", "install"]
-
-CMD ["npx", "knex", "migrate:latest"]
-
-CMD ["npx", "knex", "seed:run"]
-
-CMD ["npm", "run", "dev", "--", "--host"]
+CMD sh -c "npx knex migrate:latest && npx knex seed:run && npm run start"
