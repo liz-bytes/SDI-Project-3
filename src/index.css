@@ -1,0 +1,166 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: #0c0c16;
+  font-family: 'Exo 2', sans-serif;
+  color: #c9e8ff;
+}
+
+h1, h2, h3 {
+  font-family: 'Exo 2', sans-serif;
+  letter-spacing: 1px;
+  margin: 1rem 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  color: #6666ff;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.296);
+}
+
+h2 {
+  font-size: 2rem;
+  color: #b9f0d7;
+  text-shadow: none;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #6666ff;
+  text-shadow: none;
+}
+
+a {
+  text-decoration: none;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  display: block;
+  color: #c9e8ff;
+}
+
+button {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #c9e8ff;
+  color: #0c0c16;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #b8baff;
+  color: #0c0c16;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+th {
+  background-color: #5e5ebd;
+  color: #0c0c16;
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+tbody {
+  background-color: #b8baff;
+  color: #0c0c16;
+}
+
+tr:hover {
+  background-color: #c9e8ff;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.filter-section h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: none;
+  color: #c9f0d7;
+}
+
+/* Style the dropdown */
+.filter-dropdown {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 2px solid #c9e8ff;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #c9e8ff;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.filter-dropdown option {
+  background-color: #0c0c16; /* same as body background for consistency */
+  color: #c9e8ff;
+}
+
+/* Container for the text input and clear button */
+.filter-input-group {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Style the text input */
+.filter-input-group input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 2px solid #c9e8ff;
+  border-radius: 4px;
+  background: transparent;
+  color: #c9e8ff;
+  font-size: 1rem;
+}
+
+/* The clear filter button matches the style of the dropdown for consistency */
+.filter-input-group button {
+  background-color: transparent;
+  border: 2px solid #c9e8ff;
+  color: #c9e8ff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.filter-input-group button:hover {
+  background-color: #c9e8ff;
+  color: #0c0c16;
+}

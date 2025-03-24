@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import EquipmentData from './EquipmentDummyData.js';
+import '/src/index.css';
 
 function Equipment_Data() {
   // Call the function to get the array of equipment data
@@ -23,7 +24,7 @@ function Equipment_Data() {
       return equipment.name.toLowerCase().includes(filterValue.toLowerCase());
     }
     // Filter by deployment
-    if (filterCategory === 'id_deployments') {
+    if (filterCategory === 'deployment') {
       return equipment.id_deployments.some(dep =>
         dep.toLowerCase().includes(filterValue.toLowerCase())
       );
@@ -38,25 +39,30 @@ function Equipment_Data() {
   return (
     <div>
       <h2>Equipment Status</h2>
+      <span>Filter by: </span>
       {/* filter section */}
-      <div>
-        <span>Filter by: </span>
+      <div className="filter-section">
+      <div className="button-group">
+
         <button onClick={() => handleFilterCategoryChange('name')}>Name</button>
-        <button onClick={() => handleFilterCategoryChange('id_deployments')}>Deployment</button>
+        <button onClick={() => handleFilterCategoryChange('deployment')}>Deployment</button>
         <button onClick={() => handleFilterCategoryChange('status')}>Status</button>
+        <button className="clear-filter" onClick={() => { setFilterCategory(''); setFilterValue(''); }}>Clear Filter</button>
       </div>
       {filterCategory && (
-        <div>
+        <div className="input-group">
           <input
             type="text"
             placeholder={`Enter ${filterCategory} to filter`}
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
           />
-          <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>Clear Filter</button>
+
         </div>
       )}
+      </div>
       {/* search results */}
+      <br></br>
       <table>
         <thead>
           <tr>

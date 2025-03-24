@@ -1,7 +1,15 @@
 import React from 'react';
+// import SoldierStatus from '../Context/SoldierStatus.jsx'
+import './Dashboard.css';
 
-function BDE_Dashboard () {
-  return<h2>BDE Commander Dashboard</h2>;
-}
+const BDE_Dashboard = () => {
+  return (
+    <div>
+      <h2>Div Dashboard</h2>
+
+      {/* <SoldierStatus /> */}
+    </div>
+  );
+};
 
 export default BDE_Dashboard;
