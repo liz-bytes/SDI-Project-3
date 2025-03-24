@@ -81,15 +81,10 @@ tr:hover {
   background-color: #c9e8ff;
 }
 
-.filter-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.results-container {
   width: 100%;
-  padding: 1rem;
-  margin: 1rem 0;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .filter-section {
@@ -99,7 +94,6 @@ tr:hover {
   width: 100%;
   padding: 1rem;
   margin: 1rem 0;
-  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
 }
 
@@ -111,25 +105,32 @@ tr:hover {
   color: #c9f0d7;
 }
 
-/* Style the dropdown */
 .filter-dropdown {
   width: 100%;
-  padding: 0.5rem 1rem;
-  border: 2px solid #c9e8ff;
-  border-radius: 4px;
-  background-color: transparent;
-  color: #c9e8ff;
-  font-size: 1rem;
-  outline: none;
+  padding: 1.25rem 2rem;
+  background-color: #b9f0d7;
+  color: #0c0c16;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: 'Exo 2', sans-serif;
 }
 
 .filter-dropdown option {
-  background-color: #0c0c16; /* same as body background for consistency */
-  color: #c9e8ff;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0c0c16;
+  background-color: #c9e8ff;
 }
 
-/* Container for the text input and clear button */
 .filter-input-group {
   display: flex;
   gap: 0.75rem;
@@ -137,18 +138,10 @@ tr:hover {
   width: 100%;
 }
 
-/* Style the text input */
 .filter-input-group input {
-  flex: 1;
-  padding: 0.5rem 1rem;
-  border: 2px solid #c9e8ff;
-  border-radius: 4px;
-  background: transparent;
-  color: #c9e8ff;
-  font-size: 1rem;
+  text-transform: none;
 }
 
-/* The clear filter button matches the style of the dropdown for consistency */
 .filter-input-group button {
   background-color: transparent;
   border: 2px solid #c9e8ff;
@@ -163,4 +156,8 @@ tr:hover {
 .filter-input-group button:hover {
   background-color: #c9e8ff;
   color: #0c0c16;
+}
+
+table {
+  width: 100%;
 }
