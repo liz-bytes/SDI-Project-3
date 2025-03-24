@@ -1,0 +1,141 @@
+h2 {
+  color: #ffffff;
+  margin-bottom: 2.5rem;
+  font-size: 2.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.244);
+}
+
+button {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #2c5282;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+
+}
+
+button:hover {
+  background-color: #1a365d;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+
+/* Input Field Styles */
+input {
+  margin-bottom: 1.5rem;
+  color: #1a365d;
+  min-width: 100%; /*Looks weird when window size is smaller than buttons*/
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  padding: 1.25rem 2rem;
+  font-size: 1rem;
+  border: 3px solid #cbd5e0;
+  border-radius: 8px;
+  background-color: white;
+  color: #000000;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input:focus {
+  outline: none;
+  border-color: #2c5282;
+  box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.25);
+}
+
+input:hover {
+  border-color: #4681c9;
+}
+
+
+input.error:focus {
+  box-shadow: 0 0 0 3px rgba(192, 86, 33, 0.25);
+}
+
+/* Container styling */
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Adjust button widths */
+.button-group button {
+  width: auto;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0;
+}
+
+.input-group {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Adjust input width */
+.input-group input {
+  min-width: auto;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Clear filter button special styling */
+.input-group button {
+  width: auto;
+  white-space: nowrap;
+}
+
+
+
+/* Table styling */
+table {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #cbd5e0;
+}
+
+th {
+  background-color: #2c5282;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+tr:hover {
+  background-color: #f7fafc;
+}

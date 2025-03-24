@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SoldierDummyData from './SoldierDummyData.js';
+import './Dashboard.css';
 
 function BN_Dashboard() {
   const Soldiers = SoldierDummyData();

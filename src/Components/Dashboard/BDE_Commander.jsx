@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SoldierDummyData from './SoldierDummyData.js';
+import './Dashboard.css';
 
 function BDE_Dashboard () {
   return<h2>BDE Commander Dashboard</h2>;

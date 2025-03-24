@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SoldierDummyData from './SoldierDummyData.js';
+import './Dashboard.css';
 
 // Don't forget SoldierDummyData needs the parentathis after it so that it is treated like a array ex. "SoldierDummyData()"
 
@@ -44,7 +45,7 @@ function Div_Dashboard() {
     <div>
       <h2>Soldier Status</h2>
       <div>
-        <span>Filter by: </span>
+        <h3>Filter by: </h3>
         <button onClick={() => handleFilterCategoryChange('first name')}>First Name</button>
         <button onClick={() => handleFilterCategoryChange('deployments')}>Deployment</button>
         <button onClick={() => handleFilterCategoryChange('mos')}>MOS</button>

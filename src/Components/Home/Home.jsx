@@ -1,7 +1,8 @@
 import BN_Dashboard from '../Dashboard/BN_Commander.jsx';
 import BDE_Dashboard from '../Dashboard/BDE_Commander.jsx';
 import Div_Dashboard from '../Dashboard/Div_Commander.jsx';
-import Equipment_Data from '../Dashboard/Equipment/EquipmentDashBoard.jsx'
+import Equipment_Data from '../Dashboard/Equipment/EquipmentDashBoard.jsx';
+import './Home.css';
 import { Link } from 'react-router-dom';
 
 function Home() {
