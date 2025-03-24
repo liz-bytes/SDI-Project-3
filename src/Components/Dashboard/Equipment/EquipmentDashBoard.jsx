@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import EquipmentData from './EquipmentDummyData.js';
-import '../Dashboard.css';
+import '/src/index.css';
 
 function Equipment_Data() {
   // Call the function to get the array of equipment data

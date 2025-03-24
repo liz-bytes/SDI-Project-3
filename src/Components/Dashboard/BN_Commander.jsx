@@ -35,9 +35,9 @@ function BN_Dashboard() {
 
   return (
     <div>
-      <h2>BDE Commander Dashboard</h2>
+      <h2>BN Commander Dashboard</h2>
       <div>
-        <span>Filter by: </span>
+        <h3>Filter by: </h3>
         <button onClick={() => handleFilterCategoryChange('first name')}>First Name</button>
         <button onClick={() => handleFilterCategoryChange('deployments')}>Deployment</button>
         <button onClick={() => handleFilterCategoryChange('mos')}>MOS</button>
@@ -53,13 +53,26 @@ function BN_Dashboard() {
           <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>Clear Filter</button>
         </div>
       )}
-      <ul>
-        {filteredSoldiers.map((soldier) => (
-          <li key={soldier.id}>
-            {soldier.first_name} - {soldier.id_mos} - {soldier.id_deployments.join(', ')}
-          </li>
-        ))}
-      </ul>
+      {/* search results */}
+      <br></br>
+      <table>
+        <thead>
+          <tr>
+            <th>Soldier First Name</th>
+            <th>MOS</th>
+            <th>Deployment</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredSoldiers.map((soldier) => (
+            <tr>
+              <td>{soldier.first_name}</td>
+              <td>{soldier.id_mos.join(', ')}</td>
+              <td>{soldier.id_deployments}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
