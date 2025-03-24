@@ -1,0 +1,61 @@
+version: '3.9'
+
+services:
+  sentinel-db:
+    container_name: sentinel-db
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: sentinel_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - sentinel-db-data:/var/lib/postgresql/data
+    networks:
+      - sentinel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  sentinel-api:
+    container_name: sentinel_api_container
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    depends_on:
+      sentinel-db:
+        condition: service_healthy
+    environment:
+      DB_CONNECTION_STRING: postgres://postgres:docker@sentinel-db/sentinel_db
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    networks:
+      - sentinel-network
+    command: >
+      sh -c "npx knex migrate:latest &&
+             npx knex seed:run &&
+             npm run start"
+
+  # sentinel-ui:
+  #   container_name: sentinel-ui
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - sentinel-api
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - sentinel-network
+
+volumes:
+  sentinel-db-data:
+
+networks:
+  sentinel-network:
+    driver: bridge
