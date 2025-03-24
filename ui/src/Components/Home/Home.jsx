@@ -1,13 +1,15 @@
 import BN_Dashboard from '../Dashboard/BN_Commander.jsx';
 import BDE_Dashboard from '../Dashboard/BDE_Commander.jsx';
 import Div_Dashboard from '../Dashboard/Div_Commander.jsx';
-import Equipment_Data from '../Dashboard/Equipment/EquipmentDashBoard.jsx'
+import Equipment_Data from '../Dashboard/Equipment/EquipmentDashBoard.jsx';
+import '/src/index.css'
 import { Link } from 'react-router-dom';
 
 function Home() {
   return (
     <div>
       <h1>Sentinel Division Dashboard</h1>
+      <br></br>
       <Link to={"/BN_Dashboard"}>
         <button>View as BN Commander</button>
       </Link>
