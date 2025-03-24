@@ -6,16 +6,6 @@ function BDE_Dashboard () {
 }
 
 
-
-
-
-
-
-// Don't forget SoldierDummyData needs the parentathis after it so that it is treated like a array ex. "SoldierDummyData()"
-
-
-//If soldier unit = unit selected then show those units
-
 function Div_Dashboard() {
   // Call the function to get the array of equipment data
   const Soldiers = SoldierDummyData();
@@ -81,25 +71,6 @@ function Div_Dashboard() {
     </div>
   );
 }
-
-
-
-
-
-export default Div_Dashboard;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
