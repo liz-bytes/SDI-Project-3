@@ -23,7 +23,7 @@ function Equipment_Data() {
       return equipment.name.toLowerCase().includes(filterValue.toLowerCase());
     }
     // Filter by deployment
-    if (filterCategory === 'id_deployments') {
+    if (filterCategory === 'deployment') {
       return equipment.id_deployments.some(dep =>
         dep.toLowerCase().includes(filterValue.toLowerCase())
       );
@@ -42,7 +42,7 @@ function Equipment_Data() {
       <div>
         <span>Filter by: </span>
         <button onClick={() => handleFilterCategoryChange('name')}>Name</button>
-        <button onClick={() => handleFilterCategoryChange('id_deployments')}>Deployment</button>
+        <button onClick={() => handleFilterCategoryChange('deployment')}>Deployment</button>
         <button onClick={() => handleFilterCategoryChange('status')}>Status</button>
       </div>
       {filterCategory && (
@@ -57,6 +57,7 @@ function Equipment_Data() {
         </div>
       )}
       {/* search results */}
+      <br></br>
       <table>
         <thead>
           <tr>
