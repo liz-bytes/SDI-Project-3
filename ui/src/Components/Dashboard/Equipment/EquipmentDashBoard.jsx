@@ -20,7 +20,7 @@ function Equipment_Data() {
       return true;
     }
     // Filter by name
-    if (filterCategory === 'name') {
+    if (filterCategory === 'equipment name') {
       return equipment.name.toLowerCase().includes(filterValue.toLowerCase());
     }
     // Filter by deployment
@@ -49,7 +49,7 @@ function Equipment_Data() {
           onChange={(e) => handleFilterCategoryChange(e.target.value)}
         >
           <option value="">Select a filter</option>
-          <option value="name">Name</option>
+          <option value="equipment name">Equipment Name</option>
           <option value="deployment">Deployment</option>
           <option value="status">Status</option>
         </select>
@@ -71,7 +71,9 @@ function Equipment_Data() {
             </button>
           </div>
         )}
-        <br />
+                <p className="results-info">
+                Showing {filteredEquipments.length} of {Equipments.length} results:
+              </p>
         <table>
           <thead>
             <tr>
