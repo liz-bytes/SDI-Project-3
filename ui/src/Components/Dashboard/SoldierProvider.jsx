@@ -30,6 +30,7 @@ export const SoldierProvider = ({ children }) => {
         );
       case 'mos':
         return (soldier.id_mos?.toString().toLowerCase() || '').includes(searchTerm);
+
       default:
         return true;
     }

@@ -44,7 +44,7 @@ services:
   sentinel-ui:
     container_name: sentinel_ui_container
     build:
-      context: ./src
+      context: ./ui
       dockerfile: Dockerfile
     depends_on:
       - sentinel-api
