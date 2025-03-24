@@ -1,13 +1,12 @@
 import React from 'react';
-// import SoldierStatus from '../Context/SoldierStatus.jsx'
-import './Dashboard.css';
+import SoldierStatus from './SoldierStatus';
 
 const BDE_Dashboard = () => {
   return (
     <div>
-      <h2>Div Dashboard</h2>
-
-      {/* <SoldierStatus /> */}
+      <h2>BDE Dashboard</h2>
+     
+      <SoldierStatus />
     </div>
   );
 };
