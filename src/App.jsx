@@ -12,18 +12,21 @@ function App() {
   return (
     <SoldierProvider>
       <BrowserRouter>
-
         <Routes>
-          <Route path="*" element={<PageNotFound />} />
           <Route path="/" element={<Home />} />
-          <Route path="/BN_Dashboard" element={<BN_Dashboard />} />
-          <Route path="/BDE_Dashboard" element={<BDE_Dashboard />} />
-          <Route path="/Div_Dashboard" element={<Div_Dashboard />} />
-          <Route path="/Equipment_Data" element={<Equipment_Data />} />
+
+          <Route element={<Layout />}>
+            <Route path="/BN_Dashboard" element={<BN_Dashboard />} />
+            <Route path="/BDE_Dashboard" element={<BDE_Dashboard />} />
+            <Route path="/Div_Dashboard" element={<Div_Dashboard />} />
+            <Route path="/Equipment_Data" element={<Equipment_Data />} />
+          </Route>
+
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </SoldierProvider>
   );
 }
 
-export default App
+export default App;

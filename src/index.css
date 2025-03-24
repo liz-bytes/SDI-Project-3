@@ -107,14 +107,12 @@ tr:hover {
 
 .filter-dropdown {
   width: 100%;
-  padding: 1.25rem 2rem;
-  background-color: #b9f0d7;
-  color: #0c0c16;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 1px;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 2px solid #c9e8ff;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #c9e8ff;
   cursor: pointer;
   transition: all 0.3s ease;
   -webkit-appearance: none;
@@ -139,7 +137,15 @@ tr:hover {
 }
 
 .filter-input-group input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 2px solid #c9e8ff;
+  border-radius: 4px;
+  background: transparent;
+  color: #c9e8ff;
+  font-size: 1rem;
   text-transform: none;
+  font-family: 'Exo 2', sans-serif;
 }
 
 .filter-input-group button {
@@ -154,7 +160,7 @@ tr:hover {
 }
 
 .filter-input-group button:hover {
-  background-color: #c9e8ff;
+  background-color: #5e5ebd;
   color: #0c0c16;
 }
 
