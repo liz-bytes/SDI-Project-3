@@ -16,14 +16,22 @@ router.post('/', (req, res) => {
 })
 
 //READ
-router.get('/', (req, res) => {
-  knex('equipment_table')
-  .select('*')
-  .then(equipment => {
-    let equipmentArr = equipment.map(eqip => {return {...eqip}})
-    res.status(200).json(equipmentArr)
-  })
-})
+router.get('/', async (req, res) => {
+  const limit = parseInt(req.query.limit) || 50;    // Default to 50
+  const offset = parseInt(req.query.offset) || 0;    // Default to 0
+
+  try {
+    const equipments = await knex('equipment_table')
+      .select('*')
+      .limit(limit)
+      .offset(offset);
+
+    res.status(200).json(equipments);
+  } catch (err) {
+    console.error('Error fetching equipment:', err);
+    res.status(500).json({ message: 'Error retrieving equipment', error: err });
+  }
+});
 
 //UPDATE
 router.patch('/:id', (req, res) => {
