@@ -9,29 +9,12 @@ function Div_Dashboard() {
   const [filterValue, setFilterValue] = useState('');
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const LIMIT = 10;
+  const LIMIT = 250;
 
   const fetchSoldiers = async () => {
     try {
       setIsLoading(true);
-
-      let query = `?limit=${LIMIT}&offset=${offset}`;
-
-      if (filterCategory && filterValue) {
-        const fieldMap = {
-          'first name': 'first_name',
-          'last name': 'last_name',
-          'mos': 'id_mos',
-          'deployments': 'id_deployments',
-        };
-
-        const field = fieldMap[filterCategory];
-        if (field) {
-          query += `&${field}=${encodeURIComponent(filterValue)}`;
-        }
-      }
-
-      const res = await fetch(`${API_BASE}/soldiers${query}`);
+      const res = await fetch(`${API_BASE}/soldiers?limit=${LIMIT}&offset=${offset}`);
       const data = await res.json();
       setSoldiers(data);
     } catch (err) {
@@ -43,13 +26,33 @@ function Div_Dashboard() {
 
   useEffect(() => {
     fetchSoldiers();
-  }, [offset, filterCategory, filterValue]);
+  }, [offset]);
 
   const handleFilterCategoryChange = (category) => {
     setFilterCategory(category);
     setFilterValue('');
-    setOffset(0); // Reset to first page on filter change
   };
+
+  const filteredSoldiers = soldiers.filter((soldier) => {
+    if (!filterCategory || !filterValue) return true;
+
+    const searchTerm = filterValue.toLowerCase();
+
+    switch (filterCategory) {
+      case 'first name':
+        return soldier.first_name.toLowerCase().includes(searchTerm);
+      case 'last name':
+        return soldier.last_name.toLowerCase().includes(searchTerm);
+      case 'deployments':
+        return soldier.id_deployments?.some(dep =>
+          dep.toLowerCase().includes(searchTerm)
+        );
+      case 'mos':
+        return (soldier.id_mos?.toString().toLowerCase() || '').includes(searchTerm);
+      default:
+        return true;
+    }
+  });
 
   return (
     <div>
@@ -76,10 +79,7 @@ function Div_Dashboard() {
             type="text"
             placeholder={`Enter ${filterCategory} to filter`}
             value={filterValue}
-            onChange={(e) => {
-              setFilterValue(e.target.value);
-              setOffset(0); // Reset to first page on filter text change
-            }}
+            onChange={(e) => setFilterValue(e.target.value)}
           />
           <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>
             Clear Filter
@@ -101,12 +101,12 @@ function Div_Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {soldiers.map((soldier, index) => (
+              {filteredSoldiers.map((soldier, index) => (
                 <tr key={index}>
                   <td>{soldier.last_name}</td>
                   <td>{soldier.first_name}</td>
-                  <td>{soldier.deployment_name || 'N/A'}</td>
-                  <td>{soldier.mos_name || 'N/A'}</td>
+                  <td>{soldier.id_deployments?.join(', ')}</td>
+                  <td>{soldier.id_mos?.join(', ')}</td>
                 </tr>
               ))}
             </tbody>
@@ -134,3 +134,26 @@ function Div_Dashboard() {
 }
 
 export default Div_Dashboard;
+
+
+
+
+
+
+Make sure your backend /soldiers route supports limit and offset query params like this:
+
+// Example Express route in server/src/soldiers.js
+router.get('/', async (req, res) => {
+  const limit = parseInt(req.query.limit) || 250;
+  const offset = parseInt(req.query.offset) || 0;
+
+  try {
+    const soldiers = await knex('soldiers')
+      .limit(limit)
+      .offset(offset);
+    res.json(soldiers);
+  } catch (error) {
+    console.error('Error fetching soldiers:', error);
+    res.status(500).json({ error: 'Failed to retrieve soldiers' });
+  }
+});
