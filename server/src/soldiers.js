@@ -65,8 +65,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-
-
 //UPDATE
 router.patch('/:id', (req, res) => {
   let updatedSoldier = knex('soldiers_table')

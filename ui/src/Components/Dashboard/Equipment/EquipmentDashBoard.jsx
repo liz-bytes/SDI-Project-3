@@ -1,18 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EquipmentData from './EquipmentDummyData.js';
 import '/src/index.css';
 
 function Equipment_Data() {
-  // Get the array of equipment data
-  const Equipments = EquipmentData();
-
+  const [equipment, setEquipment] = useState([]);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterValue, setFilterValue] = useState('');
+  const [offset, setOffset] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const LIMIT = 10;
+
+  const fetchEquipment = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${API_BASE}/equipment?limit=${LIMIT}&offset=${offset}`);
+      const data = await res.json();
+      setEquipment(data);
+    } catch (err) {
+      console.error('Failed to fetch equipment:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEquipment();
+  }, [offset]);
 
   const handleFilterCategoryChange = (category) => {
     setFilterCategory(category);
     setFilterValue('');
   };
+
+  // Get the array of equipment data
+  const Equipments = EquipmentData();
 
   // Filter the equipment based on the selected category and input value
   const filteredEquipments = Equipments.filter((equipment) => {
@@ -20,7 +41,7 @@ function Equipment_Data() {
       return true;
     }
     // Filter by name
-    if (filterCategory === 'name') {
+    if (filterCategory === 'equipment name') {
       return equipment.name.toLowerCase().includes(filterValue.toLowerCase());
     }
     // Filter by deployment
@@ -49,7 +70,7 @@ function Equipment_Data() {
           onChange={(e) => handleFilterCategoryChange(e.target.value)}
         >
           <option value="">Select a filter</option>
-          <option value="name">Name</option>
+          <option value="equipment name">Equipment Name</option>
           <option value="deployment">Deployment</option>
           <option value="status">Status</option>
         </select>
@@ -71,7 +92,9 @@ function Equipment_Data() {
             </button>
           </div>
         )}
-        <br />
+                <p className="results-info">
+                Showing {filteredEquipments.length} of {Equipments.length} results:
+              </p>
         <table>
           <thead>
             <tr>
