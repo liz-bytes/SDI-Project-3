@@ -11,10 +11,10 @@ function Home() {
       <h1>Sentinel Division Dashboard</h1>
       <br></br>
       <Link to={"/BN_Dashboard"}>
-        <button>View as BN Commander</button>
+        <button>View as Battalion Commander</button>
       </Link>
       <Link to={"/BDE_Dashboard"}>
-        <button>View as BDE Commander</button>
+        <button>View as Brigade Commander</button>
       </Link>
       <Link to={"/Div_Dashboard"}>
         <button>View as Division Commander</button>

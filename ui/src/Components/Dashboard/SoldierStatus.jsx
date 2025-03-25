@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import { SoldierContext } from "./SoldierContext";
+import SoldierDummyData from '../Dashboard/SoldierDummyData.js';
 import './Dashboard.css';
+
+const Soldiers = SoldierDummyData();
 
 const SoldierStatus = () => {
 
@@ -15,7 +18,6 @@ const SoldierStatus = () => {
 
   return (
     <div>
-      <h2>Soldier Status</h2>
       {/* Container for "Filter by:" label and the dropdown */}
       <div className="filter-section">
         <h3>Filter by:</h3>
@@ -46,8 +48,9 @@ const SoldierStatus = () => {
             </button>
           </div>
         )}
-
-        <br />
+          <p className="results-info">
+          Showing {filteredSoldiers.length} of {Soldiers.length} results:
+          </p>
         <table>
           <thead>
             <tr>
