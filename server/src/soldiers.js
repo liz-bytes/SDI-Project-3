@@ -43,19 +43,29 @@ router.get('/', async (req, res) => {
       .limit(limit)
       .offset(offset);
 
-    // ✅ Apply filters if provided
-    if (req.query.first_name) {
-      query.whereILike('soldiers_table.first_name', `%${req.query.first_name}%`);
-    }
-    if (req.query.last_name) {
-      query.whereILike('soldiers_table.last_name', `%${req.query.last_name}%`);
-    }
-    if (req.query.id_mos) {
-      query.whereILike('mos_table.name', `%${req.query.id_mos}%`);
-    }
-    if (req.query.id_deployments) {
-      query.whereILike('deployments_table.name', `%${req.query.id_deployments}%`);
-    }
+  // Apply filters if provided
+  if (req.query.first_name) {
+   query.whereILike('soldiers_table.first_name', `%${req.query.first_name}%`);
+  }
+  if (req.query.last_name) {
+    query.whereILike('soldiers_table.last_name', `%${req.query.last_name}%`);
+  }
+  if (req.query.id_mos) {
+    query.whereILike('mos_table.name', `%${req.query.id_mos}%`);
+  }
+  if (req.query.id_deployments) {
+    query.whereILike('deployments_table.name', `%${req.query.id_deployments}%`);
+  }
+  if (req.query.unit_id) {
+    query.where('soldiers_table.home_unit', req.query.unit_id);
+  }
+  if (req.query.brigade_id) {
+    query
+      .join('units_map_table', 'soldiers_table.home_unit', 'units_map_table.battalion')
+      .where('units_map_table.brigade', req.query.brigade_id);
+  }
+
+
 
     const soldiers = await query;
     res.status(200).json(soldiers);
