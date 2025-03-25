@@ -3,8 +3,8 @@ import SoldierDummyData from '../Dashboard/SoldierDummyData.js';
 import { SoldierContext } from './SoldierContext';
 
 export const SoldierProvider = ({ children }) => {
-  const Soldiers = SoldierDummyData();
-  console.log(Soldiers);
+const Soldiers = SoldierDummyData();
+
 
   const [filterCategory, setFilterCategory] = useState('');
   const [filterValue, setFilterValue] = useState('');

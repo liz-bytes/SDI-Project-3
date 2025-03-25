@@ -91,9 +91,8 @@ tr:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
+  width: 200px;
   padding: 1rem;
-  margin: 1rem 0;
   border-radius: 8px;
 }
 
@@ -133,7 +132,7 @@ tr:hover {
   display: flex;
   gap: 0.75rem;
   margin-top: 1rem;
-  width: 100%;
+  width: 78.5%;
 }
 
 .filter-input-group input {
@@ -160,10 +159,16 @@ tr:hover {
 }
 
 .filter-input-group button:hover {
-  background-color: #5e5ebd;
+  background-color: #b9f0d7;
   color: #0c0c16;
 }
 
 table {
   width: 100%;
+}
+
+.results-info {
+  font-size: 1rem;
+  color: #b9f0d7;
+  margin: 1rem 0;
 }
