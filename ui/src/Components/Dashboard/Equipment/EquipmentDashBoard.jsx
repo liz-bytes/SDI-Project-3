@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import EquipmentData from './EquipmentDummyData.js';
 import '/src/index.css';
+
+const API_BASE = 'http://localhost:5173'; // Update if using proxy
 
 function Equipment_Data() {
   const [equipment, setEquipment] = useState([]);
@@ -14,7 +15,7 @@ function Equipment_Data() {
     try {
       setIsLoading(true);
       const res = await fetch(`${API_BASE}/equipment?limit=${LIMIT}&offset=${offset}`);
-      const data = await res.json();
+      const { data } = await res.json();
       setEquipment(data);
     } catch (err) {
       console.error('Failed to fetch equipment:', err);
@@ -33,10 +34,9 @@ function Equipment_Data() {
   };
 
   // Get the array of equipment data
-  const Equipments = EquipmentData();
 
   // Filter the equipment based on the selected category and input value
-  const filteredEquipments = Equipments.filter((equipment) => {
+  const filteredEquipments = equipment.filter((equipment) => {
     if (!filterCategory || !filterValue) {
       return true;
     }
@@ -46,7 +46,7 @@ function Equipment_Data() {
     }
     // Filter by deployment
     if (filterCategory === 'deployment') {
-      return equipment.id_deployments.some(dep =>
+      return equipment.deployment_name.some(dep =>
         dep.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
@@ -54,65 +54,51 @@ function Equipment_Data() {
     if (filterCategory === 'status') {
       return equipment.status.toLowerCase().includes(filterValue.toLowerCase());
     }
-    return true;
   });
 
   return (
     <div>
       <h2>Equipment Status</h2>
 
-      {/* Filter Section with Dropdown */}
-      <div className="filter-section">
-        <h3>Filter by:</h3>
-        <select
-          className="filter-dropdown"
-          value={filterCategory}
-          onChange={(e) => handleFilterCategoryChange(e.target.value)}
-        >
-          <option value="">Select a filter</option>
-          <option value="equipment name">Equipment Name</option>
-          <option value="deployment">Deployment</option>
-          <option value="status">Status</option>
-        </select>
-      </div>
-
-      {/* Container to standardize width for the filter input and table */}
       <div className="results-container">
-        {/* Show filter input if a category is selected */}
-        {filterCategory && (
-          <div className="filter-input-group">
-            <input
-              type="text"
-              placeholder={`Enter ${filterCategory} to filter`}
-              value={filterValue}
-              onChange={(e) => setFilterValue(e.target.value)}
-            />
-            <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>
-              Clear Filter
-            </button>
-          </div>
-        )}
-                <p className="results-info">
-                Showing {filteredEquipments.length} of {Equipments.length} results:
-              </p>
-        <table>
-          <thead>
-            <tr>
-              <th>Equipment Name</th>
-              <th>Deployment</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredEquipments.map((equipment) => (
-              <tr key={equipment.id}>
-                <td>{equipment.name}</td>
-                <td>{equipment.id_deployments.join(', ')}</td>
-                <td>{equipment.status}</td>
+        {isLoading ? (
+          <p>Loading soldiers...</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Equipment Name</th>
+                <th>Deployment</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredEquipments.map((equipment, index) => (
+                <tr key={index}>
+                  <td>{equipment.name}</td>
+                  <td>{equipment.deployment_name || 'N/A'}</td>
+                  <td>{equipment.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        <div className="pagination">
+          <button
+            disabled={offset === 0}
+            onClick={() => setOffset(Math.max(offset - LIMIT, 0))}
+          >
+            Previous
+          </button>
+          <span>Showing {offset + 1} – {offset + equipment.length}</span>
+          <button
+            disabled={equipment.length < LIMIT}
+            onClick={() => setOffset(offset + LIMIT)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
