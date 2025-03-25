@@ -137,6 +137,7 @@ function Div_Dashboard() {
           <table>
             <thead>
               <tr>
+                <th>Edit</th>
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Deployment</th>
@@ -146,6 +147,15 @@ function Div_Dashboard() {
             <tbody>
               {soldiers.map((soldier, index) => (
                 <tr key={index}>
+                  <td>
+                    <a href={`/edit-soldier/${soldier.id}`}>
+                      <img
+                        src="https://favicon.io/emoji-favicons/pencil"
+                        alt="Edit"
+                        style={{ width: "20px", height: "20px" }}
+                      />
+                    </a>
+                  </td>
                   <td>{soldier.last_name}</td>
                   <td>{soldier.first_name}</td>
                   <td>{soldier.deployment_name || 'N/A'}</td>
