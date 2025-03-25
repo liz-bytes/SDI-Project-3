@@ -1,15 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 
-const API_BASE = 'http://localhost:5173'; // Update if using proxy
+const API_BASE = 'http://localhost:5173';
+
+const divCommander = {
+  firstName: 'Michael',
+  password: 'Password',
+  home_unit_name: 'Deep Space Temporal Command Center',
+};
 
 function Div_Dashboard() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [form, setForm] = useState({ username: '', password: '' });
   const [soldiers, setSoldiers] = useState([]);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const LIMIT = 10;
+
+  const handleLogin = () => {
+    const isValid =
+      form.username.toLowerCase() === divCommander.firstName.toLowerCase() &&
+      form.password === divCommander.password;
+
+    if (isValid) {
+      setIsLoggedIn(true);
+    } else {
+      alert('Invalid credentials.');
+    }
+  };
 
   const fetchSoldiers = async () => {
     try {
@@ -42,8 +62,10 @@ function Div_Dashboard() {
   };
 
   useEffect(() => {
-    fetchSoldiers();
-  }, [offset, filterCategory, filterValue]);
+    if (isLoggedIn) {
+      fetchSoldiers();
+    }
+  }, [offset, filterCategory, filterValue, isLoggedIn]);
 
   const handleFilterCategoryChange = (category) => {
     setFilterCategory(category);
@@ -51,9 +73,30 @@ function Div_Dashboard() {
     setOffset(0); // Reset to first page on filter change
   };
 
+  if (!isLoggedIn) {
+    return (
+      <div>
+        <h2>Division Commander Login</h2>
+        <input
+          type="text"
+          placeholder="First Name"
+          value={form.username}
+          onChange={(e) => setForm({ ...form, username: e.target.value })}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+        />
+        <button onClick={handleLogin}>Login</button>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <h2>Soldier Status</h2>
+      <h2>Division Commander Dashboard</h2>
 
       <div className="filter-section">
         <h3>Filter by:</h3>

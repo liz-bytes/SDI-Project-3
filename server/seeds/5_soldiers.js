@@ -30,7 +30,7 @@ exports.seed = async function(knex) {
   }, {});
 
   // Generate 10,000 random soldiers
-  const randomSoldiers = generateSoldiers(50, unitMap, deploymentMap, mosMap);
+  const randomSoldiers = generateSoldiers(250, unitMap, deploymentMap, mosMap);
 
   // Commanders (12 total: 1 DIV, 3 BDE, 9 BN)
   const baseCommanders = [

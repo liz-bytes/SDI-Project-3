@@ -16,16 +16,58 @@ router.post('/', (req, res) => {
 })
 
 //READ
+// router.get('/', (req, res) => {
+//   knex('soldiers_table')
+//   .select('*')
+//   .then(soldiers => {
+//     let soldiersArr = soldiers.map(soldier => {return {...soldier}})
+//     res.status(200).json(soldiersArr)
+//   })
+// })
+
 router.get('/', async (req, res) => {
-  const limit = parseInt(req.query.limit) || 50;    // Default to 50
-  const offset = parseInt(req.query.offset) || 0;    // Default to 0
+  const limit = parseInt(req.query.limit) || 250;
+  const offset = parseInt(req.query.offset) || 0;
 
   try {
-    const soldiers = await knex('soldiers_table')
-      .select('*')
+    const query = knex('soldiers_table')
+      .select(
+        'soldiers_table.id',
+        'soldiers_table.first_name',
+        'soldiers_table.last_name',
+        'deployments_table.name as deployment_name',
+        'mos_table.name as mos_name'
+      )
+      .leftJoin('deployments_table', 'soldiers_table.id_deployments', 'deployments_table.id')
+      .leftJoin('mos_table', 'soldiers_table.id_mos', 'mos_table.id')
       .limit(limit)
       .offset(offset);
 
+  // Apply filters if provided
+  if (req.query.first_name) {
+   query.whereILike('soldiers_table.first_name', `%${req.query.first_name}%`);
+  }
+  if (req.query.last_name) {
+    query.whereILike('soldiers_table.last_name', `%${req.query.last_name}%`);
+  }
+  if (req.query.id_mos) {
+    query.whereILike('mos_table.name', `%${req.query.id_mos}%`);
+  }
+  if (req.query.id_deployments) {
+    query.whereILike('deployments_table.name', `%${req.query.id_deployments}%`);
+  }
+  if (req.query.unit_id) {
+    query.where('soldiers_table.home_unit', req.query.unit_id);
+  }
+  if (req.query.brigade_id) {
+    query
+      .join('units_map_table', 'soldiers_table.home_unit', 'units_map_table.battalion')
+      .where('units_map_table.brigade', req.query.brigade_id);
+  }
+
+
+
+    const soldiers = await query;
     res.status(200).json(soldiers);
   } catch (err) {
     console.error('Error fetching soldiers:', err);
@@ -44,7 +86,7 @@ router.patch('/:id', (req, res) => {
   .catch((err) => {
     res.status(500).json({message: 'Error updating soldier', error: err})
   })
-})
+});
 
 //DELETE
 router.delete('/:id', (req, res) => {
