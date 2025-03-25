@@ -94,6 +94,7 @@ function Div_Dashboard() {
           <table>
             <thead>
               <tr>
+                <th>Edit</th>
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Deployment</th>
