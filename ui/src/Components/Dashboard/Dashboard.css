@@ -1,11 +1,8 @@
 h2 {
-  color: #ffffff;
-  margin-bottom: 2.5rem;
   font-size: 2.5rem;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.244);
 }
 
 button {
@@ -37,20 +34,11 @@ button:active {
 }
 
 
-
-
-
-
-
-
-
-
-
 /* Input Field Styles */
 input {
   margin-bottom: 1.5rem;
   color: #1a365d;
-  min-width: 100%; /*Looks weird when window size is smaller than buttons*/
+  min-width: 88.5%; /*Looks weird when window size is smaller than buttons*/
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -102,10 +90,6 @@ input.error:focus {
   margin-bottom: 0;
 }
 
-h3 {
-  text-align: center;
-}
-
 .input-group {
   display: flex;
   gap: 1rem;
@@ -151,4 +135,15 @@ th {
 
 tr:hover {
   background-color: #f7fafc;
+}
+
+.login-bg {
+  background-color: #cbcbcb;
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 10px 4px #616161;
+}
+
+.pagination {
+  color: #616161;
 }

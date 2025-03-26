@@ -40,9 +40,6 @@ const BDE_Dashboard = () => {
   const [filterValue, setFilterValue] = useState('');
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [mosList, setMosList] = useState([]);
-  const [deploymentList, setDeploymentList] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const LIMIT = 10;
 
   const handleLogin = async () => {
@@ -148,8 +145,8 @@ const BDE_Dashboard = () => {
 
   if (!isLoggedIn) {
     return (
-      <div>
-        <h2>Brigade Commander Login</h2>
+      <div className="login-bg">
+        <h2 className="login-header">BDE Commander Login</h2>
         <input
           type="text"
           placeholder="First Name"
@@ -168,7 +165,7 @@ const BDE_Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className="login-bg">
       <h2>Welcome, Commander {commander.firstName}</h2>
       <h3>Your Brigade: {brigadeUnit?.name}</h3>
 

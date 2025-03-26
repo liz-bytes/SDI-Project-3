@@ -168,8 +168,8 @@ function BN_Dashboard() {
 
   if (!isLoggedIn) {
     return (
-      <div>
-        <h2>BN Commander Login</h2>
+      <div className="login-bg">
+        <h2 className="login-header">BN Commander Login</h2>
         <input
           type="text"
           placeholder="First Name"
@@ -188,7 +188,7 @@ function BN_Dashboard() {
   }
 
   return (
-    <div>
+    <div className="login-bg">
       <h2>Welcome, Commander {commander.firstName}</h2>
       <h3>Your Battalion: {commander.home_unit_name}</h3>
   
@@ -336,11 +336,7 @@ function BN_Dashboard() {
                 <tr key={i}>
                   <td>
                     <Link to={`/soldier/${s.id}`}>
-                      <img
-                        src="https://favicon.io/emoji-favicons/pencil"
-                        alt="Edit"
-                        style={{ width: "20px", height: "20px" }}
-                      />
+                      Edit
                     </Link>
                   </td>
                   <td>{s.first_name}</td>

@@ -108,8 +108,8 @@ const Div_Commander = () => {
 
   if (!isLoggedIn) {
     return (
-      <div>
-        <h2>Division Commander Login</h2>
+      <div className="login-bg">
+        <h2 className="login-header">Division Commander Login</h2>
         <input
           type="text"
           placeholder="First Name"
@@ -128,10 +128,8 @@ const Div_Commander = () => {
   }
 
   return (
-    <div>
-      <h2>Welcome, Commander {commander.firstName}</h2>
-      <h3>Your HQ: {commander.home_unit_name}</h3>
-
+    <div className="login-bg">
+      <h2>Division Commander Dashboard</h2>
       <button onClick={() => setShowModal(true)}>Add New Soldier</button>
 
       {showModal && (

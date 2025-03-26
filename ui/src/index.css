@@ -1,9 +1,14 @@
+html {
+  background-image: linear-gradient(hsl(238, 93%, 11%), rgb(56, 147, 208));
+  min-height: 100%;
+  background-repeat: no-repeat;
+}
+
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  background-color: #0c0c16;
   font-family: 'Exo 2', sans-serif;
   color: #c9e8ff;
 }
@@ -17,15 +22,14 @@ h1, h2, h3 {
 h1 {
   font-size: 2.5rem;
   text-transform: uppercase;
-  color: #6666ff;
+  color: rgb(221, 221, 221);
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.296);
+  text-shadow: 0px 10px 10px #00000054;
 }
 
 h2 {
   font-size: 2rem;
-  color: #b9f0d7;
-  text-shadow: none;
+  color: rgb(59, 64, 67);
 }
 
 h3 {
@@ -73,12 +77,12 @@ th {
 }
 
 tbody {
-  background-color: #b8baff;
+  background-color: #aaaaaa;
   color: #0c0c16;
 }
 
 tr:hover {
-  background-color: #c9e8ff;
+  background-color: #a2aeb7;
 }
 
 .results-container {
@@ -94,6 +98,7 @@ tr:hover {
   width: 200px;
   padding: 1rem;
   border-radius: 8px;
+  background-color: #aaaaaa;
 }
 
 .filter-section h3 {
@@ -101,17 +106,17 @@ tr:hover {
   font-size: 1.25rem;
   font-weight: 500;
   text-transform: none;
-  color: #c9f0d7;
+  color: #000000;
 }
 
 .filter-dropdown {
   width: 100%;
   padding: 0.5rem 1rem;
   background: transparent;
-  border: 2px solid #c9e8ff;
+  border: 2px solid #000000;
   border-radius: 4px;
   font-size: 1rem;
-  color: #c9e8ff;
+  color: #000000;
   cursor: pointer;
   transition: all 0.3s ease;
   -webkit-appearance: none;
@@ -123,9 +128,9 @@ tr:hover {
 .filter-dropdown option {
   font-family: 'Exo 2', sans-serif;
   font-size: 1.1rem;
-  font-weight: 600;
-  color: #0c0c16;
-  background-color: #c9e8ff;
+  font-wergb(0, 0, 0)00;
+  color: #ffffff;
+  background-color: #000000;
 }
 
 .filter-input-group {
@@ -138,10 +143,10 @@ tr:hover {
 .filter-input-group input {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: 2px solid #c9e8ff;
+  border: 2px solid #000000;
   border-radius: 4px;
   background: transparent;
-  color: #c9e8ff;
+  color: #000000;
   font-size: 1rem;
   text-transform: none;
   font-family: 'Exo 2', sans-serif;
@@ -149,8 +154,8 @@ tr:hover {
 
 .filter-input-group button {
   background-color: transparent;
-  border: 2px solid #c9e8ff;
-  color: #c9e8ff;
+  border: 2px solid #000000;
+  color: #000000;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   font-size: 1rem;
@@ -171,4 +176,18 @@ table {
   font-size: 1rem;
   color: #b9f0d7;
   margin: 1rem 0;
+}
+
+.login-bg {
+  background-color: #cbcbcb;
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 10px 4px #616161;
+}
+
+.equipment-bg {
+  background-color: #cbcbcb;
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 10px 4px #616161;
 }
