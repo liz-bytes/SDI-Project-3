@@ -1,0 +1,13 @@
+{
+    "name": "chrono-corps",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Full-stack Dockerized military status tracker",
+    "scripts": {
+      "dev": "docker-compose up --build",
+      "start": "docker-compose up",
+      "stop": "docker-compose down"
+    },
+    "license": "MIT"
+  }
+  

@@ -2,28 +2,63 @@ const express = require('express');
 const router = express.Router();
 const knex = require('knex')(require('../knexfile.js')["development"]);
 
-//CREATE
-router.post('/', (req, res) => {
-  let {first_name, last_name, id_deployments, home_unit, id_mos} = req.body
-  knex('soldiers_table')
-  .insert({first_name, last_name, id_deployments, home_unit, id_mos})
-  .then(() => {
-    res.status(201).json({message: `Soldier ${last_name}, ${first_name} created successfully.`})
-  })
-  .catch((err) => {
-    res.status(500).json({message: 'Error creating soldier', error: err})
-  })
-})
+async function getOrCreateUnit(knex, unitName, parentBrigadeId = null, parentDivisionId = null) {
+  let unit = await knex('units').where({ name: unitName }).first();
 
-//READ
-// router.get('/', (req, res) => {
-//   knex('soldiers_table')
-//   .select('*')
-//   .then(soldiers => {
-//     let soldiersArr = soldiers.map(soldier => {return {...soldier}})
-//     res.status(200).json(soldiersArr)
-//   })
-// })
+  if (unit) return unit.id;
+
+  const [newUnit] = await knex('units')
+    .insert({ name: unitName, location: 'Unknown' })
+    .returning('*');
+
+  if (parentBrigadeId) {
+    await knex('unit_map').insert({
+      brigade_id: parentBrigadeId,
+      battalion_id: newUnit.id,
+      battalion_location: newUnit.location,
+    });
+  }
+
+  return newUnit.id;
+}
+
+
+//CREATE
+router.post('/', async (req, res) => {
+  const knex = req.knex;
+  const {
+    first_name,
+    last_name,
+    id_mos,
+    id_deployments,
+    unit_name,           // new field from frontend
+    parent_brigade_id,   // optional if coming from BDE
+    parent_division_id   // optional if coming from DIV
+  } = req.body;
+
+  if (!first_name || !last_name || !id_mos || !unit_name) {
+    return res.status(400).json({ error: 'Missing required soldier fields.' });
+  }
+
+  try {
+    const unit_id = await getOrCreateUnit(knex, unit_name, parent_brigade_id, parent_division_id);
+
+    const [newSoldier] = await knex('soldiers')
+      .insert({
+        first_name,
+        last_name,
+        id_mos,
+        id_deployments: id_deployments || null,
+        unit_id,
+      })
+      .returning('*');
+
+    res.status(201).json(newSoldier);
+  } catch (err) {
+    console.error('Error creating soldier:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 router.get('/', async (req, res) => {
   const limit = parseInt(req.query.limit) || 250;
