@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '/src/index.css';
 
-const API_BASE = 'http://localhost:5173'; // Update if using proxy
+const API_BASE = 'http://localhost:8080'; // Update if using proxy
 
 function Equipment_Data() {
   const [equipment, setEquipment] = useState([]);

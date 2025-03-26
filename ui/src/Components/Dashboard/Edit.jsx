@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+const API_BASE = 'http://localhost:8080';
+
 
 const Edit = () => {
 
@@ -13,56 +15,62 @@ const Edit = () => {
   })
 
   useEffect(()=>{
-    fetch(`http://localhost:5173/soldiers`)
-    .then(rawData => rawData.json())
-    .then(data => {
-      return(data.filter(soldier => soldier.id == id)[0])
-    })
-    .then(foundSoldier => setSoldier(foundSoldier))
-  }, [id])
+    fetch(`${API_BASE}/soldiers/${id}`)
+    .then((res) => res.json())
+      .then((data) => setSoldier(data))
+      .catch((err) => console.error('Failed to fetch soldier:', err));
+  }, [id]);
 
-  const Patch = (info) => {
-    info.preventDefault();
+  const Patch = async (e) => {
+    e.preventDefault();
 
-    fetch(`http://localhost:5173/soldiers/${soldier.id}`, {
-      method: 'PATCH',
-      headers: {'ContentType': 'application/json'},
-      body: JSON.stringify(soldier)
-    })
-    .then(response => {
-      return(response.json())
-    })
-    .catch(error => console.log("Error updating soldier: ", error))
-  }
+    try {
+      const res = await fetch(`${API_BASE}/soldiers/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(soldier),
+      });
 
-  const Save = (info) => {
-    setSoldier(prevInfo => ({
-      ...prevInfo,
-      [info.target.id]: info.target.value
-    }))
-  }
+      const data = await res.json();
 
-  return(
-  
+      if (!res.ok) {
+        throw new Error(data.error || 'Unknown error');
+      }
+
+      alert('Soldier updated successfully!');
+    } catch (err) {
+      console.error('Error updating soldier:', err);
+      alert('Failed to update soldier');
+    }
+  };
+
+  const Save = (e) => {
+    setSoldier((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  return (
     <form onSubmit={Patch}>
       <div>
         <h3>
           <label htmlFor="first_name">First Name: </label>
-          <input type="text" id="first_name" value={soldier.first_name} onChange={Save}/>
+          <input type="text" id="first_name" value={soldier.first_name} onChange={Save} />
           <label htmlFor="last_name">Last Name: </label>
-          <input type="text" id="last_name" value={soldier.last_name} onChange={Save}/>
+          <input type="text" id="last_name" value={soldier.last_name} onChange={Save} />
         </h3>
 
         <label htmlFor="deployment_name">Deployment: </label>
-        <input type="text" id="deployment_name" value={soldier.deployment_name} onChange={Save}/>
+        <input type="text" id="deployment_name" value={soldier.deployment_name} onChange={Save} />
         <label htmlFor="mos_name">MOS: </label>
-        <input type="text" id="mos_name" value={soldier.mos_name} onChange={Save}/>
-
+        <input type="text" id="mos_name" value={soldier.mos_name} onChange={Save} />
       </div>
-      <button type="submit" onClick={Patch}>Save</button>
+      <button type="submit">Save</button>
     </form>
-  )
+  );
+};
 
-  }
-
-  export default Edit;
+export default Edit;

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 5173
+const port = 8080
 //const knex = require('knex')(require('../knexfile.js')["development"]);
 
 const deploymentsRoutes = require('./deployments');

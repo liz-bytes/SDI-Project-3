@@ -11,6 +11,6 @@ FROM node:18-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 RUN npm install -g serve
-EXPOSE 5172
-CMD ["serve", "-s", "dist", "-l", "5172"]
+EXPOSE 5173
+CMD ["serve", "-s", "dist", "-l", "5173"]
 

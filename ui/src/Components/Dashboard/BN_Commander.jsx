@@ -4,23 +4,48 @@ import Edit from './Edit.jsx';
 import './Dashboard.css';
 
 
-const API_BASE = 'http://localhost:5173';
+const API_BASE = 'http://localhost:8080';
 
 const bnCommanders = [
   {
-    firstName: 'Jax',
+    firstName: 'Rafael',
     password: 'Password',
-    home_unit_name: '22nd Stellar Infantry Battalion',
+    home_unit_name: '101st Phantom Battalion',
   },
   {
-    firstName: 'Nova',
+    firstName: 'Amira',
     password: 'Password',
-    home_unit_name: '108th Chrono Armor Battalion',
+    home_unit_name: '103rd Obsidian Ghosts',
   },
   {
-    firstName: 'Zane',
+    firstName: 'Victor',
     password: 'Password',
-    home_unit_name: '315th Rift Engineer Battalion',
+    home_unit_name: '102nd Dusk Raiders',
+  },
+  {
+    firstName: 'Natalia',
+    password: 'Password',
+    home_unit_name: '203rd Celestial Watch',
+  },
+  {
+    firstName: 'Tariq',
+    password: 'Password',
+    home_unit_name: '201st Chrono Lancers',
+  },
+  {
+    firstName: 'Mei',
+    password: 'Password',
+    home_unit_name: '202nd Riftwalkers',
+  },
+  {
+    firstName: 'Griffin',
+    password: 'Password',
+    home_unit_name: '301st Spectral Blades',
+  },
+  {
+    firstName: 'Zach',
+    password: 'Password',
+    home_unit_name: '302nd Abyss Stalkers',
   },
 ];
 
@@ -166,25 +191,28 @@ function BN_Dashboard() {
     <div>
       <h2>Welcome, Commander {commander.firstName}</h2>
       <h3>Your Battalion: {commander.home_unit_name}</h3>
-
+  
       <button onClick={() => setShowModal(true)}>Add New Soldier</button>
-
+  
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Add New Soldier</h3>
+  
             <input
               type="text"
               placeholder="First Name"
               value={form.first_name || ''}
               onChange={(e) => setForm({ ...form, first_name: e.target.value })}
             />
+  
             <input
               type="text"
               placeholder="Last Name"
               value={form.last_name || ''}
               onChange={(e) => setForm({ ...form, last_name: e.target.value })}
             />
+  
             <select
               value={form.id_mos || ''}
               onChange={(e) => setForm({ ...form, id_mos: e.target.value })}
@@ -194,6 +222,7 @@ function BN_Dashboard() {
                 <option key={mos.id} value={mos.id}>{mos.name}</option>
               ))}
             </select>
+  
             <select
               value={form.id_deployments || ''}
               onChange={(e) => setForm({ ...form, id_deployments: e.target.value })}
@@ -203,11 +232,11 @@ function BN_Dashboard() {
                 <option key={dep.id} value={dep.id}>{dep.name}</option>
               ))}
             </select>
-
+  
             <div className="modal-buttons">
               <button onClick={async () => {
                 try {
-                  const res = await fetch(`${API_BASE}/api/soldiers`, {
+                  const res = await fetch(`${API_BASE}/soldiers`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -215,26 +244,26 @@ function BN_Dashboard() {
                       last_name: form.last_name,
                       id_mos: parseInt(form.id_mos),
                       id_deployments: form.id_deployments ? parseInt(form.id_deployments) : null,
-                      unit_id: unitId,
+                      unit_id: unitId
                     }),
                   });
-
+                  
+  
                   const data = await res.json();
-
+  
                   if (!res.ok) {
                     console.error("API Error:", data);
                     alert(`Error: ${data.error || 'Something went wrong'}`);
                     return;
                   }
-
+  
                   alert('Soldier added successfully!');
-                  setForm(prev => ({
-                    ...prev,
+                  setForm({
                     first_name: '',
                     last_name: '',
                     id_mos: '',
                     id_deployments: ''
-                  }));
+                  });
                   fetchSoldiers();
                   setShowModal(false);
                 } catch (err) {
@@ -244,12 +273,14 @@ function BN_Dashboard() {
               }}>
                 Submit
               </button>
+  
               <button onClick={() => setShowModal(false)}>Cancel</button>
             </div>
           </div>
         </div>
       )}
-
+  
+      {/* 👇 Filter Section */}
       <div className="filter-section">
         <h3>Filter by:</h3>
         <select
@@ -264,7 +295,7 @@ function BN_Dashboard() {
           <option value="mos">MOS</option>
         </select>
       </div>
-
+  
       {filterCategory && (
         <div className="filter-input-group">
           <input
@@ -276,17 +307,16 @@ function BN_Dashboard() {
               setOffset(0);
             }}
           />
-          <button
-            onClick={() => {
-              setFilterCategory("");
-              setFilterValue("");
-            }}
-          >
+          <button onClick={() => {
+            setFilterCategory('');
+            setFilterValue('');
+          }}>
             Clear Filter
           </button>
         </div>
       )}
-
+  
+      {/* 👇 Results Table */}
       <div className="results-container">
         {isLoading ? (
           <p>Loading soldiers...</p>
@@ -305,7 +335,6 @@ function BN_Dashboard() {
               {soldiers.map((s, i) => (
                 <tr key={i}>
                   <td>
-                    {/* <a href={`/soldier/${s.id}`}> */}
                     <Link to={`/soldier/${s.id}`}>
                       <img
                         src="https://favicon.io/emoji-favicons/pencil"
@@ -313,7 +342,6 @@ function BN_Dashboard() {
                         style={{ width: "20px", height: "20px" }}
                       />
                     </Link>
-                    {/* </a> */}
                   </td>
                   <td>{s.first_name}</td>
                   <td>{s.last_name}</td>
@@ -324,6 +352,7 @@ function BN_Dashboard() {
             </tbody>
           </table>
         )}
+  
         <div className="pagination">
           <button
             disabled={offset === 0}
@@ -331,9 +360,7 @@ function BN_Dashboard() {
           >
             Previous
           </button>
-          <span>
-            Showing {offset + 1} – {offset + soldiers.length}
-          </span>
+          <span>Showing {offset + 1} – {offset + soldiers.length}</span>
           <button
             disabled={soldiers.length < LIMIT}
             onClick={() => setOffset(offset + LIMIT)}
@@ -344,6 +371,6 @@ function BN_Dashboard() {
       </div>
     </div>
   );
-}
+              }
 
 export default BN_Dashboard;

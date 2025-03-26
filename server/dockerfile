@@ -6,6 +6,6 @@ COPY . .
 
 RUN npm install
 
-EXPOSE 5173
+EXPOSE 8080
 
 CMD sh -c "npx knex migrate:latest && npx knex seed:run && npm run start"
