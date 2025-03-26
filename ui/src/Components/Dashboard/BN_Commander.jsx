@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
+import Edit from './Edit.jsx';
 import './Dashboard.css';
+
 
 const API_BASE = 'http://localhost:5173';
 
@@ -183,7 +186,12 @@ function BN_Dashboard() {
               setOffset(0);
             }}
           />
-          <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>
+          <button
+            onClick={() => {
+              setFilterCategory("");
+              setFilterValue("");
+            }}
+          >
             Clear Filter
           </button>
         </div>
@@ -196,6 +204,7 @@ function BN_Dashboard() {
           <table>
             <thead>
               <tr>
+                <th>Edit</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>MOS</th>
@@ -205,10 +214,21 @@ function BN_Dashboard() {
             <tbody>
               {soldiers.map((s, i) => (
                 <tr key={i}>
+                  <td>
+                    {/* <a href={`/soldier/${s.id}`}> */}
+                    <Link to={`/soldier/${s.id}`}>
+                      <img
+                        src="https://favicon.io/emoji-favicons/pencil"
+                        alt="Edit"
+                        style={{ width: "20px", height: "20px" }}
+                      />
+                    </Link>
+                    {/* </a> */}
+                  </td>
                   <td>{s.first_name}</td>
                   <td>{s.last_name}</td>
-                  <td>{s.mos_name || 'N/A'}</td>
-                  <td>{s.deployment_name || 'N/A'}</td>
+                  <td>{s.mos_name || "N/A"}</td>
+                  <td>{s.deployment_name || "N/A"}</td>
                 </tr>
               ))}
             </tbody>
@@ -221,7 +241,9 @@ function BN_Dashboard() {
           >
             Previous
           </button>
-          <span>Showing {offset + 1} – {offset + soldiers.length}</span>
+          <span>
+            Showing {offset + 1} – {offset + soldiers.length}
+          </span>
           <button
             disabled={soldiers.length < LIMIT}
             onClick={() => setOffset(offset + LIMIT)}

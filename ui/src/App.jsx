@@ -6,6 +6,7 @@ import Div_Dashboard from './Components/Dashboard/Div_Commander.jsx';
 import PageNotFound from './Components/PageNotFound/PageNotFound.jsx';
 import Equipment_Data from './Components/Dashboard/Equipment/EquipmentDashBoard.jsx';
 import Layout from './Components/Layout.jsx';
+import Edit from './Components/Dashboard/Edit.jsx';
 import { SoldierProvider } from './Components/Dashboard/SoldierProvider.jsx';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/BDE_Dashboard" element={<BDE_Dashboard />} />
             <Route path="/Div_Dashboard" element={<Div_Dashboard />} />
             <Route path="/Equipment_Data" element={<Equipment_Data />} />
+            <Route path="/soldier/:id" element={<Edit />} />
           </Route>
 
           <Route path="*" element={<PageNotFound />} />
