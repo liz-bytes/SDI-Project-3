@@ -8,19 +8,44 @@ const API_BASE = 'http://localhost:5173';
 
 const bnCommanders = [
   {
-    firstName: 'Jax',
+    firstName: 'Rafael',
     password: 'Password',
-    home_unit_name: '22nd Stellar Infantry Battalion',
+    home_unit_name: '101st Phantom Battalion',
   },
   {
-    firstName: 'Nova',
+    firstName: 'Amira',
     password: 'Password',
-    home_unit_name: '108th Chrono Armor Battalion',
+    home_unit_name: '103rd Obsidian Ghosts',
   },
   {
-    firstName: 'Zane',
+    firstName: 'Victor',
     password: 'Password',
-    home_unit_name: '315th Rift Engineer Battalion',
+    home_unit_name: '102nd Dusk Raiders',
+  },
+  {
+    firstName: 'Natalia',
+    password: 'Password',
+    home_unit_name: '203rd Celestial Watch',
+  },
+  {
+    firstName: 'Tariq',
+    password: 'Password',
+    home_unit_name: '201st Chrono Lancers',
+  },
+  {
+    firstName: 'Mei',
+    password: 'Password',
+    home_unit_name: '202nd Riftwalkers',
+  },
+  {
+    firstName: 'Griffin',
+    password: 'Password',
+    home_unit_name: '301st Spectral Blades',
+  },
+  {
+    firstName: 'Zach',
+    password: 'Password',
+    home_unit_name: '302nd Abyss Stalkers',
   },
 ];
 
@@ -143,8 +168,8 @@ function BN_Dashboard() {
 
   if (!isLoggedIn) {
     return (
-      <div>
-        <h2>BN Commander Login</h2>
+      <div className="login-bg">
+        <h2 className="login-header">BN Commander Login</h2>
         <input
           type="text"
           placeholder="First Name"
@@ -163,7 +188,7 @@ function BN_Dashboard() {
   }
 
   return (
-    <div>
+    <div className="login-bg">
       <h2>Welcome, Commander {commander.firstName}</h2>
       <h3>Your Battalion: {commander.home_unit_name}</h3>
 
@@ -307,11 +332,7 @@ function BN_Dashboard() {
                   <td>
                     {/* <a href={`/soldier/${s.id}`}> */}
                     <Link to={`/soldier/${s.id}`}>
-                      <img
-                        src="https://favicon.io/emoji-favicons/pencil"
-                        alt="Edit"
-                        style={{ width: "20px", height: "20px" }}
-                      />
+                      Edit
                     </Link>
                     {/* </a> */}
                   </td>

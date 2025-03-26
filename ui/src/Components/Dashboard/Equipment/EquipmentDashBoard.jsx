@@ -57,7 +57,7 @@ function Equipment_Data() {
   });
 
   return (
-    <div>
+    <div className="equipment-bg">
       <h2>Equipment Status</h2>
 
       <div className="results-container">

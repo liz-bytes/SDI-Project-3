@@ -106,8 +106,8 @@ function Div_Dashboard() {
 
   if (!isLoggedIn) {
     return (
-      <div>
-        <h2>Division Commander Login</h2>
+      <div className="login-bg">
+        <h2 className="login-header">Division Commander Login</h2>
         <input
           type="text"
           placeholder="First Name"
@@ -126,7 +126,7 @@ function Div_Dashboard() {
   }
 
   return (
-    <div>
+    <div className="login-bg">
       <h2>Division Commander Dashboard</h2>
       <button onClick={() => setShowModal(true)}>Add New Soldier</button>
 
