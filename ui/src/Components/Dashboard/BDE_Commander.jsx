@@ -32,6 +32,7 @@ const BDE_Dashboard = () => {
   const [filterValue, setFilterValue] = useState('');
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const LIMIT = 10;
 
   const handleLogin = async () => {
@@ -153,6 +154,86 @@ const BDE_Dashboard = () => {
       </ul>
 
       <h3>Soldiers Assigned to Your Brigade:</h3>
+      <button onClick={() => setShowModal(true)}>Add New Soldier</button>
+      {showModal && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <h3>Add New Soldier</h3>
+      <input
+        type="text"
+        placeholder="First Name"
+        value={form.first_name || ''}
+        onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Last Name"
+        value={form.last_name || ''}
+        onChange={(e) => setForm({ ...form, last_name: e.target.value })}
+      />
+      <select
+        value={form.id_mos || ''}
+        onChange={(e) => setForm({ ...form, id_mos: e.target.value })}
+      >
+        <option value="">Select MOS</option>
+        {mosList.map((mos) => (
+          <option key={mos.id} value={mos.id}>{mos.name}</option>
+        ))}
+      </select>
+      <select
+        value={form.id_deployments || ''}
+        onChange={(e) => setForm({ ...form, id_deployments: e.target.value })}
+      >
+        <option value="">Select Deployment (optional)</option>
+        {deploymentList.map((dep) => (
+          <option key={dep.id} value={dep.id}>{dep.name}</option>
+        ))}
+      </select>
+      <div className="modal-buttons">
+        <button onClick={async () => {
+          try {
+            const res = await fetch('http://localhost:5173/api/soldiers', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                first_name: form.first_name,
+                last_name: form.last_name,
+                id_mos: parseInt(form.id_mos),
+                id_deployments: form.id_deployments ? parseInt(form.id_deployments) : null,
+                unit_id: unitId,
+              }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+              console.error("API Error:", data);
+              alert(`Error: ${data.error || 'Something went wrong'}`);
+              return;
+            }
+
+            alert('Soldier added successfully!');
+            setForm(prev => ({
+              ...prev,
+              first_name: '',
+              last_name: '',
+              id_mos: '',
+              id_deployments: '',
+            }));
+            fetchSoldiers();
+            setShowModal(false);
+          } catch (err) {
+            console.error('Failed to add soldier:', err);
+            alert('Something went wrong');
+          }
+        }}>
+          Submit
+        </button>
+        <button onClick={() => setShowModal(false)}>Cancel</button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Filter Section */}
       <div className="filter-section">

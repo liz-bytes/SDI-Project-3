@@ -6,52 +6,34 @@ import './Dashboard.css';
 
 const API_BASE = 'http://localhost:5173';
 
-const commanderCredentials = [
+const bnCommanders = [
   {
-    firstName: 'Rafael',
+    firstName: 'Jax',
     password: 'Password',
-    home_unit_name: '101st Phantom Battalion',
+    home_unit_name: '22nd Stellar Infantry Battalion',
   },
   {
-    firstName: 'Amira',
+    firstName: 'Nova',
     password: 'Password',
-    home_unit_name: '103rd Obsidian Ghosts',
+    home_unit_name: '108th Chrono Armor Battalion',
   },
   {
-    firstName: 'Victor',
+    firstName: 'Zane',
     password: 'Password',
-    home_unit_name: '102nd Dusk Raiders',
-  },
-  {
-    firstName: 'Natalia',
-    password: 'Password',
-    home_unit_name: '203rd Celestial Watch',
-  },
-  {
-    firstName: 'Tariq',
-    password: 'Password',
-    home_unit_name: '201st Chrono Lancers',
-  },
-  {
-    firstName: 'Mei',
-    password: 'Password',
-    home_unit_name: '202nd Riftwalkers',
-  },
-  {
-    firstName: 'Griffin',
-    password: 'Password',
-    home_unit_name: '301st Spectral Blades',
-  },
-  {
-    firstName: 'Zach',
-    password: 'Password',
-    home_unit_name: '302nd Abyss Stalkers',
+    home_unit_name: '315th Rift Engineer Battalion',
   },
 ];
 
 function BN_Dashboard() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+    first_name: '',
+    last_name: '',
+    id_mos: '',
+    id_deployments: '',
+  });
   const [commander, setCommander] = useState(null);
   const [unitId, setUnitId] = useState(null);
   const [soldiers, setSoldiers] = useState([]);
@@ -59,10 +41,13 @@ function BN_Dashboard() {
   const [filterValue, setFilterValue] = useState('');
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [mosList, setMosList] = useState([]);
+  const [deploymentList, setDeploymentList] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const LIMIT = 10;
 
   const handleLogin = async () => {
-    const match = commanderCredentials.find(
+    const match = bnCommanders.find(
       (c) =>
         c.firstName.toLowerCase() === form.username.toLowerCase() &&
         c.password === form.password
@@ -74,17 +59,19 @@ function BN_Dashboard() {
     }
 
     try {
-      const unitsRes = await fetch(`${API_BASE}/units`);
-      const units = await unitsRes.json();
-      const matchedUnit = units.find(u => u.name === match.home_unit_name);
+      const res = await fetch(`${API_BASE}/units`);
+      const units = await res.json();
+      const assignedUnit = units.find(
+        (u) => u.name === match.home_unit_name
+      );
 
-      if (!matchedUnit) {
+      if (!assignedUnit) {
         alert('Unit not found.');
         return;
       }
 
       setCommander(match);
-      setUnitId(matchedUnit.id);
+      setUnitId(assignedUnit.id);
       setIsLoggedIn(true);
     } catch (err) {
       console.error('Login error:', err);
@@ -93,17 +80,17 @@ function BN_Dashboard() {
 
   const fetchSoldiers = async () => {
     if (!unitId) return;
+    setIsLoading(true);
 
     try {
-      setIsLoading(true);
-
       let query = `?limit=${LIMIT}&offset=${offset}&unit_id=${unitId}`;
 
       if (filterCategory && filterValue) {
         const fieldMap = {
           'first name': 'first_name',
-          'deployments': 'id_deployments',
+          'last name': 'last_name',
           'mos': 'id_mos',
+          'deployments': 'id_deployments',
         };
 
         const field = fieldMap[filterCategory];
@@ -123,10 +110,30 @@ function BN_Dashboard() {
   };
 
   useEffect(() => {
-    if (isLoggedIn && unitId) {
+    if (unitId) {
       fetchSoldiers();
     }
-  }, [offset, filterCategory, filterValue, isLoggedIn, unitId]);
+  }, [unitId, offset, filterCategory, filterValue]);
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const [mosRes, deploymentRes] = await Promise.all([
+          fetch(`${API_BASE}/mos`),
+          fetch(`${API_BASE}/deployments`)
+        ]);
+        const mosData = await mosRes.json();
+        const deploymentData = await deploymentRes.json();
+
+        setMosList(mosData);
+        setDeploymentList(deploymentData);
+      } catch (err) {
+        console.error('Failed to fetch MOS or deployments:', err);
+      }
+    };
+
+    fetchOptions();
+  }, []);
 
   const handleFilterCategoryChange = (category) => {
     setFilterCategory(category);
@@ -160,7 +167,89 @@ function BN_Dashboard() {
       <h2>Welcome, Commander {commander.firstName}</h2>
       <h3>Your Battalion: {commander.home_unit_name}</h3>
 
-      {/* Filter Section */}
+      <button onClick={() => setShowModal(true)}>Add New Soldier</button>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Add New Soldier</h3>
+            <input
+              type="text"
+              placeholder="First Name"
+              value={form.first_name || ''}
+              onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={form.last_name || ''}
+              onChange={(e) => setForm({ ...form, last_name: e.target.value })}
+            />
+            <select
+              value={form.id_mos || ''}
+              onChange={(e) => setForm({ ...form, id_mos: e.target.value })}
+            >
+              <option value="">Select MOS</option>
+              {mosList.map((mos) => (
+                <option key={mos.id} value={mos.id}>{mos.name}</option>
+              ))}
+            </select>
+            <select
+              value={form.id_deployments || ''}
+              onChange={(e) => setForm({ ...form, id_deployments: e.target.value })}
+            >
+              <option value="">Select Deployment (optional)</option>
+              {deploymentList.map((dep) => (
+                <option key={dep.id} value={dep.id}>{dep.name}</option>
+              ))}
+            </select>
+
+            <div className="modal-buttons">
+              <button onClick={async () => {
+                try {
+                  const res = await fetch(`${API_BASE}/api/soldiers`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      first_name: form.first_name,
+                      last_name: form.last_name,
+                      id_mos: parseInt(form.id_mos),
+                      id_deployments: form.id_deployments ? parseInt(form.id_deployments) : null,
+                      unit_id: unitId,
+                    }),
+                  });
+
+                  const data = await res.json();
+
+                  if (!res.ok) {
+                    console.error("API Error:", data);
+                    alert(`Error: ${data.error || 'Something went wrong'}`);
+                    return;
+                  }
+
+                  alert('Soldier added successfully!');
+                  setForm(prev => ({
+                    ...prev,
+                    first_name: '',
+                    last_name: '',
+                    id_mos: '',
+                    id_deployments: ''
+                  }));
+                  fetchSoldiers();
+                  setShowModal(false);
+                } catch (err) {
+                  console.error('Failed to add soldier:', err);
+                  alert('Something went wrong');
+                }
+              }}>
+                Submit
+              </button>
+              <button onClick={() => setShowModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="filter-section">
         <h3>Filter by:</h3>
         <select
@@ -170,6 +259,7 @@ function BN_Dashboard() {
         >
           <option value="">Select a filter</option>
           <option value="first name">First Name</option>
+          <option value="last name">Last Name</option>
           <option value="deployments">Deployment</option>
           <option value="mos">MOS</option>
         </select>

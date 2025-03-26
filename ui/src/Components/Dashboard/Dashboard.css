@@ -37,6 +37,15 @@ button:active {
 }
 
 
+
+
+
+
+
+
+
+
+
 /* Input Field Styles */
 input {
   margin-bottom: 1.5rem;
@@ -91,6 +100,10 @@ input.error:focus {
   width: auto;
   padding: 1rem 1.5rem;
   margin-bottom: 0;
+}
+
+h3 {
+  text-align: center;
 }
 
 .input-group {

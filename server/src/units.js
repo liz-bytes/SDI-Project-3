@@ -2,6 +2,30 @@ const express = require('express');
 const router = express.Router();
 const knex = require('knex')(require('../knexfile.js')["development"]);
 
+async function getOrCreateUnit(knex, unitName, parentBrigadeId = null, parentDivisionId = null) {
+  let unit = await knex('units').where({ name: unitName }).first();
+  
+  if (unit) return unit.id;
+
+  // Create new unit
+  const [newUnit] = await knex('units')
+    .insert({ name: unitName, location: 'Unknown' }) // you can customize default values
+    .returning('*');
+
+  // Map under brigade if available
+  if (parentBrigadeId) {
+    await knex('unit_map').insert({
+      brigade_id: parentBrigadeId,
+      battalion_id: newUnit.id,
+      battalion_location: newUnit.location,
+    });
+  }
+
+  // If creating under division, you can choose to also create a brigade map or similar logic
+
+  return newUnit.id;
+}
+
 // CREATE
 router.post('/', (req, res) => {
   let { location, name } = req.body;
