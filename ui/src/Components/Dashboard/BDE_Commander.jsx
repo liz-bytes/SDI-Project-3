@@ -23,17 +23,8 @@ const API_BASE = 'http://localhost:5173';
 
 const BDE_Dashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [form, setForm] = useState({
-    username: '',
-    password: '',
-    unit_name: '',
-    new_unit_name: '',
-    first_name: '',
-    last_name: '',
-    id_mos: '',
-    id_deployments: '',
-  });
-  const [commander, setCommander] = useState(null);  
+  const [form, setForm] = useState({ username: '', password: '' });
+  const [commander, setCommander] = useState(null);
   const [brigadeUnit, setBrigadeUnit] = useState(null);
   const [bnList, setBnList] = useState([]);
   const [soldiers, setSoldiers] = useState([]);
@@ -41,8 +32,7 @@ const BDE_Dashboard = () => {
   const [filterValue, setFilterValue] = useState('');
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [mosList, setMosList] = useState([]);
-  const [deploymentList, setDeploymentList] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const LIMIT = 10;
 
   const handleLogin = async () => {
@@ -77,26 +67,7 @@ const BDE_Dashboard = () => {
       console.error('Login error:', err);
     }
   };
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const [mosRes, deploymentRes] = await Promise.all([
-          fetch(`${API_BASE}/mos`),
-          fetch(`${API_BASE}/deployments`)
-        ]);
-        const mosData = await mosRes.json();
-        const deploymentData = await deploymentRes.json();
-  
-        setMosList(mosData);
-        setDeploymentList(deploymentData);
-      } catch (err) {
-        console.error('Failed to fetch MOS or deployments:', err);
-      }
-    };
-  
-    fetchOptions();
-  }, []);
-  
+
   useEffect(() => {
     if (!commander) return;
 
@@ -172,7 +143,7 @@ const BDE_Dashboard = () => {
       <h2>Welcome, Commander {commander.firstName}</h2>
       <h3>Your Brigade: {brigadeUnit?.name}</h3>
       <p>Location: {brigadeUnit?.location}</p>
-  
+
       <h3>Battalions Under Your Command:</h3>
       <ul>
         {bnList.map((bn) => (
@@ -181,65 +152,44 @@ const BDE_Dashboard = () => {
           </li>
         ))}
       </ul>
-  
-      {/* Add Soldier Section */}
-      <div className="filter-section">
-        <h3>Add New Soldier</h3>
-        <select
-          value={form.unit_name || ''}
-          onChange={(e) => setForm({ ...form, unit_name: e.target.value })}
-        >
-          <option value="">Select Unit</option>
-          {bnList.map((bn) => (
-            <option key={bn.battalion_id} value={bn.battalion_name}>
-              {bn.battalion_name}
-            </option>
-          ))}
-          <option value="__new__">Add New Unit</option>
-        </select>
-  
-        {form.unit_name === '__new__' && (
-          <input
-            type="text"
-            placeholder="New Unit Name"
-            value={form.new_unit_name || ''}
-            onChange={(e) => setForm({ ...form, new_unit_name: e.target.value })}
-          />
-        )}
-  
-        <input
-          type="text"
-          placeholder="First Name"
-          value={form.first_name || ''}
-          onChange={(e) => setForm({ ...form, first_name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={form.last_name || ''}
-          onChange={(e) => setForm({ ...form, last_name: e.target.value })}
-        />
-        <select
-  value={form.id_mos || ''}
-  onChange={(e) => setForm({ ...form, id_mos: e.target.value })}
->
-  <option value="">Select MOS</option>
-  {mosList.map((mos) => (
-    <option key={mos.id} value={mos.id}>{mos.name}</option>
-  ))}
-</select>
 
-<select
-  value={form.id_deployments || ''}
-  onChange={(e) => setForm({ ...form, id_deployments: e.target.value })}
->
-  <option value="">Select Deployment (optional)</option>
-  {deploymentList.map((dep) => (
-    <option key={dep.id} value={dep.id}>{dep.name}</option>
-  ))}
-</select>
-
-  
+      <h3>Soldiers Assigned to Your Brigade:</h3>
+      <button onClick={() => setShowModal(true)}>Add New Soldier</button>
+      {showModal && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <h3>Add New Soldier</h3>
+      <input
+        type="text"
+        placeholder="First Name"
+        value={form.first_name || ''}
+        onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Last Name"
+        value={form.last_name || ''}
+        onChange={(e) => setForm({ ...form, last_name: e.target.value })}
+      />
+      <select
+        value={form.id_mos || ''}
+        onChange={(e) => setForm({ ...form, id_mos: e.target.value })}
+      >
+        <option value="">Select MOS</option>
+        {mosList.map((mos) => (
+          <option key={mos.id} value={mos.id}>{mos.name}</option>
+        ))}
+      </select>
+      <select
+        value={form.id_deployments || ''}
+        onChange={(e) => setForm({ ...form, id_deployments: e.target.value })}
+      >
+        <option value="">Select Deployment (optional)</option>
+        {deploymentList.map((dep) => (
+          <option key={dep.id} value={dep.id}>{dep.name}</option>
+        ))}
+      </select>
+      <div className="modal-buttons">
         <button onClick={async () => {
           try {
             const res = await fetch('http://localhost:5173/api/soldiers', {
@@ -250,38 +200,41 @@ const BDE_Dashboard = () => {
                 last_name: form.last_name,
                 id_mos: parseInt(form.id_mos),
                 id_deployments: form.id_deployments ? parseInt(form.id_deployments) : null,
-                unit_name: form.unit_name === '__new__' ? form.new_unit_name : form.unit_name,
-                parent_brigade_id: commander.brigade_id
+                unit_id: unitId,
               }),
             });
-  
+
+            const data = await res.json();
+
             if (!res.ok) {
-              const error = await res.json();
-              alert(`Error: ${error.error}`);
+              console.error("API Error:", data);
+              alert(`Error: ${data.error || 'Something went wrong'}`);
               return;
             }
-  
+
             alert('Soldier added successfully!');
             setForm(prev => ({
               ...prev,
-              unit_name: '',
-              new_unit_name: '',
               first_name: '',
               last_name: '',
               id_mos: '',
               id_deployments: '',
             }));
-            
-            setOffset(0);
+            fetchSoldiers();
+            setShowModal(false);
           } catch (err) {
             console.error('Failed to add soldier:', err);
             alert('Something went wrong');
           }
         }}>
-          Add Soldier
+          Submit
         </button>
+        <button onClick={() => setShowModal(false)}>Cancel</button>
       </div>
-  
+    </div>
+  </div>
+)}
+
       {/* Filter Section */}
       <div className="filter-section">
         <h4>Filter by:</h4>
@@ -297,7 +250,7 @@ const BDE_Dashboard = () => {
           <option value="mos">MOS</option>
         </select>
       </div>
-  
+
       {filterCategory && (
         <div className="filter-input-group">
           <input
@@ -306,7 +259,7 @@ const BDE_Dashboard = () => {
             value={filterValue}
             onChange={(e) => {
               setFilterValue(e.target.value);
-              setOffset(0);
+              setOffset(0); // Reset page when typing new filter
             }}
           />
           <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>
@@ -314,7 +267,7 @@ const BDE_Dashboard = () => {
           </button>
         </div>
       )}
-  
+
       {isLoading ? (
         <p>Loading soldiers...</p>
       ) : (
@@ -339,7 +292,7 @@ const BDE_Dashboard = () => {
               ))}
             </tbody>
           </table>
-  
+
           <div className="pagination">
             <button
               disabled={offset === 0}

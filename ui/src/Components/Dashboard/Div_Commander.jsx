@@ -14,19 +14,20 @@ function Div_Dashboard() {
   const [form, setForm] = useState({
     username: '',
     password: '',
+    unit_name: '',
     first_name: '',
     last_name: '',
     id_mos: '',
     id_deployments: '',
-  });  
+  });
   const [soldiers, setSoldiers] = useState([]);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [offset, setOffset] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [mosList, setMosList] = useState([]);
   const [deploymentList, setDeploymentList] = useState([]);
-
   const LIMIT = 10;
 
   const handleLogin = () => {
@@ -70,6 +71,7 @@ function Div_Dashboard() {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -79,17 +81,17 @@ function Div_Dashboard() {
         ]);
         const mosData = await mosRes.json();
         const deploymentData = await deploymentRes.json();
-  
+
         setMosList(mosData);
         setDeploymentList(deploymentData);
       } catch (err) {
         console.error('Failed to fetch MOS or deployments:', err);
       }
     };
-  
+
     fetchOptions();
   }, []);
-  
+
   useEffect(() => {
     if (isLoggedIn) {
       fetchSoldiers();
@@ -126,82 +128,97 @@ function Div_Dashboard() {
   return (
     <div>
       <h2>Division Commander Dashboard</h2>
-  
-      {/* Add Soldier Section */}
-      <div className="filter-section">
-        <h3>Add New Soldier</h3>
-        <input
-          type="text"
-          placeholder="Unit Name"
-          value={form.unit_name || ''}
-          onChange={(e) => setForm({ ...form, unit_name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="First Name"
-          value={form.first_name || ''}
-          onChange={(e) => setForm({ ...form, first_name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={form.last_name || ''}
-          onChange={(e) => setForm({ ...form, last_name: e.target.value })}
-        />
-        <select
-  value={form.id_mos || ''}
-  onChange={(e) => setForm({ ...form, id_mos: e.target.value })}
->
-  <option value="">Select MOS</option>
-  {mosList.map((mos) => (
-    <option key={mos.id} value={mos.id}>{mos.name}</option>
-  ))}
-</select>
+      <button onClick={() => setShowModal(true)}>Add New Soldier</button>
 
-<select
-  value={form.id_deployments || ''}
-  onChange={(e) => setForm({ ...form, id_deployments: e.target.value })}
->
-  <option value="">Select Deployment (optional)</option>
-  {deploymentList.map((dep) => (
-    <option key={dep.id} value={dep.id}>{dep.name}</option>
-  ))}
-</select>
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Add New Soldier</h3>
+            <input
+              type="text"
+              placeholder="Unit Name"
+              value={form.unit_name || ''}
+              onChange={(e) => setForm({ ...form, unit_name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="First Name"
+              value={form.first_name || ''}
+              onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={form.last_name || ''}
+              onChange={(e) => setForm({ ...form, last_name: e.target.value })}
+            />
+            <select
+              value={form.id_mos || ''}
+              onChange={(e) => setForm({ ...form, id_mos: e.target.value })}
+            >
+              <option value="">Select MOS</option>
+              {mosList.map((mos) => (
+                <option key={mos.id} value={mos.id}>{mos.name}</option>
+              ))}
+            </select>
+            <select
+              value={form.id_deployments || ''}
+              onChange={(e) => setForm({ ...form, id_deployments: e.target.value })}
+            >
+              <option value="">Select Deployment (optional)</option>
+              {deploymentList.map((dep) => (
+                <option key={dep.id} value={dep.id}>{dep.name}</option>
+              ))}
+            </select>
 
-        <button onClick={async () => {
-          try {
-            const res = await fetch('http://localhost:5173/api/soldiers', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                first_name: form.first_name,
-                last_name: form.last_name,
-                id_mos: parseInt(form.id_mos),
-                id_deployments: form.id_deployments ? parseInt(form.id_deployments) : null,
-                unit_name: form.unit_name,
-                parent_division_id: 1 // You could pass the actual DIV ID if you map it
-              }),
-            });
-  
-            if (!res.ok) {
-              const error = await res.json();
-              alert(`Error: ${error.error}`);
-              return;
-            }
-  
-            alert('Soldier added successfully!');
-            setForm({});
-            fetchSoldiers();
-          } catch (err) {
-            console.error('Failed to add soldier:', err);
-            alert('Something went wrong');
-          }
-        }}>
-          Add Soldier
-        </button>
-      </div>
-  
-      {/* Filter Section */}
+            <div className="modal-buttons">
+              <button onClick={async () => {
+                try {
+                  const res = await fetch(`${API_BASE}/soldiers`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      first_name: form.first_name,
+                      last_name: form.last_name,
+                      id_mos: parseInt(form.id_mos),
+                      id_deployments: form.id_deployments ? parseInt(form.id_deployments) : null,
+                      unit_name: form.unit_name,
+                      parent_division_id: 1
+                    }),
+                  });
+
+                  const data = await res.json();
+
+                  if (!res.ok) {
+                    console.error("API Error:", data);
+                    alert(`Error: ${data.error || 'Something went wrong'}`);
+                    return;
+                  }
+
+                  alert('Soldier added successfully!');
+                  setForm(prev => ({
+                    ...prev,
+                    first_name: '',
+                    last_name: '',
+                    id_mos: '',
+                    id_deployments: '',
+                    unit_name: ''
+                  }));
+                  fetchSoldiers();
+                  setShowModal(false);
+                } catch (err) {
+                  console.error('Failed to add soldier:', err);
+                  alert('Something went wrong');
+                }
+              }}>
+                Submit
+              </button>
+              <button onClick={() => setShowModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="filter-section">
         <h3>Filter by:</h3>
         <select
@@ -216,7 +233,7 @@ function Div_Dashboard() {
           <option value="mos">MOS</option>
         </select>
       </div>
-  
+
       {filterCategory && (
         <div className="filter-input-group">
           <input
@@ -225,7 +242,7 @@ function Div_Dashboard() {
             value={filterValue}
             onChange={(e) => {
               setFilterValue(e.target.value);
-              setOffset(0);
+              setOffset(0); // Reset to first page on filter text change
             }}
           />
           <button onClick={() => { setFilterCategory(''); setFilterValue(''); }}>
@@ -233,8 +250,7 @@ function Div_Dashboard() {
           </button>
         </div>
       )}
-  
-      {/* Results Table */}
+
       <div className="results-container">
         {isLoading ? (
           <p>Loading soldiers...</p>
@@ -270,7 +286,7 @@ function Div_Dashboard() {
             </tbody>
           </table>
         )}
-  
+
         <div className="pagination">
           <button
             disabled={offset === 0}
@@ -289,6 +305,6 @@ function Div_Dashboard() {
       </div>
     </div>
   );
-};
+}
 
 export default Div_Dashboard;
